@@ -107,6 +107,7 @@ VerificationIcon = <Icon> {
 }
 ```
 
+----
 
 ### makepad音频:
 我们肯定不想在同一时间播放两段音频, 所以要有一个 `AudioController`, 而且一定要是全局唯一的.
@@ -310,6 +311,8 @@ fn handle_actions(&mut self, cx: &mut Cx, actions: &Actions) {
     }
 }
 ```
+
+----
 
 ### makepad 中的 Action:
 
