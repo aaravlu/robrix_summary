@@ -1,4 +1,4 @@
-#### PortalList 索引编号
+### PortalList 索引编号:
 `PortalList` 在 makepad 中是一个及其复杂的组件
 当前我们的 `RoomsList` 只是一个一维的List, 但是在Robrix中, 我们为它手动却抽象出了伪二维的概念.
 
@@ -80,8 +80,9 @@ struct RoomCategoryIndexes {
     }
 ```
 
-##### makepad 对于 SVG 的处理:
+----
 
+### makepad 对于 SVG 的处理:
 我在做 [Display verification status as a badge atop the user profile icon](https://github.com/project-robius/robrix/pull/244)
 的时候, 发现 makepad 对于 SVG 的处理并不是很完善, 尤其是居中.
 
@@ -107,7 +108,7 @@ VerificationIcon = <Icon> {
 ```
 
 
-#### 音频播放
+### makepad音频:
 我们肯定不想在同一时间播放两段音频, 所以要有一个 `AudioController`, 而且一定要是全局唯一的.
 这是一个后台组件, 负责音频的播放, 暂停, 停止, 所以无需在 UI 上多写任何代码, 它也是不可见的:
 ```rust
@@ -310,7 +311,7 @@ fn handle_actions(&mut self, cx: &mut Cx, actions: &Actions) {
 }
 ```
 
-#### makepad 中的 Action
+### makepad 中的 Action:
 
 `Event` 是 Matrix 中的事件, 而 `Action` 是 `Event` 的一个变体.
 

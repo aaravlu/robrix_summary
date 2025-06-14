@@ -1,7 +1,5 @@
-#### 订阅器
-
-我们应该被动地订阅事件，而不是主动拉取, 因为我们根本无法知晓何时主动拉取,
-`matrix-sdk` 有些预实现的订阅器:
+### `matrix-sdk` 订阅器:
+我们应该被动地订阅事件，而不是主动拉取, 因为我们根本无法知晓何时主动拉取, `matrix-sdk` 有些预实现的订阅器:
 ```rust
 // 订阅验证状态.
 let mut verification_state_subscriber = client.encryption().verification_state();
@@ -22,7 +20,7 @@ let direct_event_content_subscriber = client.observe_events::<GlobalAccountDataE
 
 ----
 
-#### 时间线中的图像质量
+### 时间线中的图像质量:
 当用户在时间线里上传了一张足够不清晰的图片时, Matrix Server 不会为它生成一张缩略图.
 也就是说, 时间线里的一张图片, 原图版本一定存在, 缩略图版本则可能存在.
 
@@ -58,7 +56,7 @@ pub fn try_get_media_or_fetch(
 
 ----
 
-#### 不要过分关注 sdk 内部细节:
+### 不要过分关注 `matrix-sdk` 内部细节:
 不要过分关注 `matrix-sdk` 内部细节, 要多关注它暴露出来了哪些方法和函数, 比如说
 [Highlight all messages that mention or reply to the current user, even if that message does not set the mentions field](https://github.com/project-robius/robrix/pull/430)
 
@@ -95,8 +93,9 @@ msg.mentions().is_some_and(|mentions|
 
 我们自己实现的代码费力不讨好, 所以今后要对接 matrix 的 功能的时候, 一定要先在 `matrix-sdk` 那边问.
 
-#### 调试与测试
+----
 
+### 调试与测试:
 我们可以自己编写 mini cli client 用于测试, 比如说我可以搭建一个 [mini cli client](https://github.com/aaravlu/matrix-client-cli),
 用于不断地切换房间的 `direct` 属性, 然后在 Robrix 里查看 RoomsList 是否有及时更新:
 ```rust
