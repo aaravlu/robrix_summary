@@ -60,7 +60,7 @@ pub fn try_get_media_or_fetch(
 
 #### 不要过分关注 sdk 内部细节:
 不要过分关注 `matrix-sdk` 内部细节, 要多关注它暴露出来了哪些方法和函数, 比如说
-[Highlight timeline event](https://github.com/project-robius/robrix/pull/430)
+[Highlight all messages that mention or reply to the current user, even if that message does not set the mentions field](https://github.com/project-robius/robrix/pull/430)
 
 在这里我们自己实现了一个函数, 确定哪些消息应该高亮:
 ```rust
@@ -90,15 +90,15 @@ msg.mentions().is_some_and(|mentions|
 )
 ```
 
-但是, 这其实是我们自以为是的逻辑, matrix-sdk 的 timeline 是非常复杂的, 使用上述的方法, 我发现有些消息提及用户的消息根本无法高亮,
-问了 matrix-sdk 那边, 才知道早有一个 `EventTimelineItem::is_highlighted()` 方法, 它完美除处理了所有的情况
+但是, 这其实是我们自以为是的逻辑, `matrix-sdk` 的 timeline 是非常复杂的, 使用上述的方法, 我发现有些消息提及用户的消息根本无法高亮,
+问了 `matrix-sdk` 那边, 才知道早有一个 `EventTimelineItem::is_highlighted()` 方法, 它完美除处理了所有的情况.
 
-我们自己实现的代码费力不讨好, 所以今后要对接 matrix 的 功能的时候, 一定要先在 sdk 那边问.
-
+我们自己实现的代码费力不讨好, 所以今后要对接 matrix 的 功能的时候, 一定要先在 `matrix-sdk` 那边问.
 
 #### 调试与测试
 
-我们可以自己编写 mini cli client 用于测试, 比如说我想测试 Room 的direct在RoomsList有没有及时更新, 我可以搭建一个 [mini cli client](https://github.com/aaravlu/matrix-client-cli):
+我们可以自己编写 mini cli client 用于测试, 比如说我可以搭建一个 [mini cli client](https://github.com/aaravlu/matrix-client-cli),
+用于不断地切换房间的 `direct` 属性, 然后在 Robrix 里查看 RoomsList 是否有及时更新:
 ```rust
 #[tokio::main]
 async fn main() {
@@ -166,8 +166,8 @@ async fn main() {
 }
 ```
 
-这会不断地切换两个房间的 `direct` 状态, 然后在 Robrix 里查看 RoomsList 是否有及时更新.
+但是如果我们想进行别的测试, 就要定制各种不同的cli client, 这样就会过于繁琐.
 
-但是, 如果我们想进行别的测试, 就要定制各种不同的cli client, 这样就会过于繁琐.
+Element 实际提供了各种各样的请求发送的方法, 打开 Element, 在任意房间输入 `/devtools`, 开启开发者模式, 即可发送任意事件类型的请求
 
-Element 实际提供了各种各样的请求发送的方法, 打开 Element, 在任意房间输入 `/develope tools`, 开启开发者模式, 即可发送任意事件类型的请求
+![element_devtools](./element_devtools.png "element_devtools")
