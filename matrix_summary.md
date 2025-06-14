@@ -176,39 +176,3 @@ Element 实际提供了各种各样的请求发送的方法, 打开 Element, 在
 即可发送任意事件类型的请求:
 
 ![devtools_inner](./devtools_inner.png "devtools_inner")
-
-
-#### makepad 中的 Action
-
-`Event` 是 Matrix 中的事件, 而 `Action` 是 `Event` 的一个变体.
-
-有3种发送 `Action` 的方法:
-
-```rust
-//可以拿到Context的情况下, 直接广播.
-cx.action(action1);
-
-// 精确地向某个组件发送广播, 需要这个组件的uid以及路径.
-cx.widget_action(target_widget_uid, &path, action2);
-
-// 拿不到Context的情况下, 使用后备线程广播,比如由 tokio 异步管理的线程, 但性能可能比不上 `cx.action()`
-Cx::post_action(action3)
-```
-
-接收 `Action`, 也有很多方法, 这里说两种:
-
-```rust
-// 如果你没有修改v1, v2, ... 的需求.
-match action1.downcast_ref() {
-    Some(v1) => { ... }
-    Some(v2) => { ... }
-    _ => { ... }
-}
-
-// 如果你想修改v1, v2, ..., 但绝大多数情况都用不到这种
-match action2.downcast_mut() {
-    Some(v1) => { ... }
-    Some(v2) => { ... }
-    _ => { ... }
-}
-```
