@@ -86,7 +86,7 @@ struct RoomCategoryIndexes {
 的时候, 发现 makepad 对于 SVG 的处理并不是很完善, 尤其是居中.
 
 SVG 的本质是 XAML 文档, 这是一种及其复杂的格式, 一个 SVG 文件大小 可能有3KB, 内部属性值可能有几百个, makepad 不可能全部对接,
-比如说居中, 我使用主流的图片查看器查看svg都是居中的, 但是在makepad里有些SVG不能默认居中, 调成如下格式才能完美居中:
+比如说居中, 我使用主流的图片查看器查看svg都是居中的, 但是在makepad, 里有些 SVG 不能默认居中, 需要调整格式才能完美居中:
 
 ```rust
 VerificationIcon = <Icon> {
@@ -188,6 +188,7 @@ fn handle_startup(&mut self, cx: &mut Cx) {
                     let (left, right) = output_buffer.stereo_mut();
                     for i in 0..left.len() {
                         if pos + 4 < audio_data_len {
+                            // 2^4 = 16, 所以 pos 加4个数作为索引, 分别是0, 1, 2, 3.
                             let left_i16 = i16::from_le_bytes([audio.data[pos], audio.data[pos + 1]]);
                             let right_i16 = i16::from_le_bytes([audio.data[pos + 2], audio.data[pos + 3]]);
                             left[i] = left_i16 as f32 / i16::MAX as f32;
@@ -205,6 +206,7 @@ fn handle_startup(&mut self, cx: &mut Cx) {
                         let (left, right) = output_buffer.stereo_mut();
                         for i in 0..left.len() {
                             if pos + 5 < audio_data_len {
+                                // 我们只需要24, 但是 2^5 = 32, 所以第一个留空, pos 加6个数作为索引, 分别是0, 1, 2, 3, 4, 5.
                                 let left_i32 = i32::from_le_bytes([0, audio.data[pos], audio.data[pos + 1], audio.data[pos + 2]]);
                                 let right_i32 = i32::from_le_bytes([0, audio.data[pos + 3], audio.data[pos + 4], audio.data[pos + 5]]);
                                 left[i] = left_i32 as f32 / i32::MAX as f32;
@@ -221,7 +223,8 @@ fn handle_startup(&mut self, cx: &mut Cx) {
                     output_buffer.zero();
                         let (left, right) = output_buffer.stereo_mut();
                         for i in 0..left.len() {
-                            if pos + 7 < audio_data_len {
+                            if pos + 6 < audio_data_len {
+                                // 2^5 = 32, 所以 pos 加8个数, 分别是0, 1, 2, 3, 4, 5, 6 ,7.
                                 let left_i32 = i32::from_le_bytes([audio.data[pos], audio.data[pos + 1], audio.data[pos + 2], audio.data[pos + 3]]);
                                 let right_i32 = i32::from_le_bytes([audio.data[pos + 4], audio.data[pos + 5], audio.data[pos + 6], audio.data[pos + 7]]);
                                 left[i] = left_i32 as f32 / i32::MAX as f32;
@@ -233,7 +236,9 @@ fn handle_startup(&mut self, cx: &mut Cx) {
                             }
                         }
                 }
-                _ => { }
+                _ => {
+                    // 其他格式挺稀有的, 先不管了.
+                }
             }
 
             // Use `pos + audio.bit_depth.ilog2()` rather than `pos` to ensure no panic when computing isize mentioned above.
