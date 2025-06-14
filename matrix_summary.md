@@ -171,3 +171,5 @@ async fn main() {
 Element 实际提供了各种各样的请求发送的方法, 打开 Element, 在任意房间输入 `/devtools`, 开启开发者模式, 即可发送任意事件类型的请求
 
 ![element_devtools](./element_devtools.png "element_devtools")
+
+![devtools_inner](./devtools_inner.png "devtools_inner")
